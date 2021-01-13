@@ -56,6 +56,16 @@ plt.ylabel('Brain Weight in grams')
 plt.legend()
 plt.show()
 
+# Mean Square Error
+ss_t = 0
+ss_r = 0
+for i in range(m):
+    y_pred = b0 + b1 * x[i]
+    ss_t += (y[i] - mean_y) ** 2
+    ss_r += (y[i] - y_pred) ** 2
+r2 = 1 - (ss_r / ss_t)
+print(r2)
+
 
 # In[ ]:
 
