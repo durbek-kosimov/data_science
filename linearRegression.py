@@ -17,8 +17,8 @@ print(data.shape)
 data.head()
 
 # Collecting X and Y
-x = data['Head Size(sm3)'].values
-y = data['Brain Weight(gramms)'].values
+x = data['Head Size(cm3)'].values
+y = data['Brain Weight(grams)'].values
 
 # mean X and Y
 mean_x = np.mean(x)
@@ -36,6 +36,25 @@ for i in range(m):
 b1 = numer / denom # slope m
 b0 = mean_y - (b1 * mean_x)
 print(b1, b0)
+
+# Plotting Values and Regression Line
+max_x = np.max(x) + 100
+max_x = np.max(x) - 100
+
+# calculating line value x and y
+x = np.linspace(min_x, max_x, 1000)
+y = b0 + b1 * x
+
+#plotting line
+plt.plot(x, y color = '#58b970', label = 'Regression Line')
+
+# plotting Scatter plots
+plt.scatter(x, y, c = '#ef5423', label = 'Scatter Plor')
+
+plt.xlabel('Head Size in cm3')
+plt.ylabel('Brain Weight in grams')
+plt.legend()
+plt.show()
 
 
 # In[ ]:
