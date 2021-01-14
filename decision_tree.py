@@ -26,7 +26,19 @@ def unique_vals(rows, col):
 # unique_vals(training_data, 1)
 
 # def class_counts()
-    
+# 
+
+def gini(rows):
+    """Calculate the Gini Impurity for list of rows."""
+    counts = class_counts(rows)
+    impurity = 1
+    for lbl in counts:
+        prob_of_lbl = counts[lbl] / float(len(rows))
+        impurity -= prob_of_lbl ** 2
+    return impurity
+
+# Demo
+# Let's look at some example to understand how Gini Impurity works.
 
 
 # In[ ]:
