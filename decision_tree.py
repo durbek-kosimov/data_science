@@ -39,6 +39,25 @@ def gini(rows):
 
 # Demo
 # Let's look at some example to understand how Gini Impurity works.
+def info_gain(left, right, current_uncertainty):
+    """Information Gain.
+    The uncertainty of the starting node, 
+    minus the weighted impurity of two child nodes.
+    """
+    p = float(len(left)) / (len(left) + len(right))
+    return current_uncertainty - p * gini(left) - (1 - p) * gini(right)
+
+# Demo
+# Calculate the uncertainty of our training data.
+# current_uncertainty  gini(training_data)
+
+# How much information do we gain by partitioning on 'Green'?
+# true_rows, false_rows = partition(training_data, Question(0, 'Green'))
+# info_gain(true_rows, false_rows, current_uncertainty)
+
+# What about if we partitioned on 'Red' instead?
+# true_rows, false_rows = partition(training_data, Question(0, 'Red'))
+# info_gain(true_rows, false_rows, current_uncertainty)
 
 
 # In[ ]:
