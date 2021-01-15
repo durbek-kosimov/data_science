@@ -65,6 +65,16 @@ class Question:
         val = example[self.column]
         if is_numeric(val):
             return val >= self.value
+        else:
+            return val == self.value
+        
+    def __repr__(self):
+        # This is just a helper method to print
+        # the question in a readable format.
+        condition = "=="
+        if is_numeric(self.value):
+            condition = ">="
+        return "Is %s %s %s?" % (header[self.column], condition, str(self.value))
 
 def gini(rows):
     """Calculate the Gini Impurity for list of rows."""
