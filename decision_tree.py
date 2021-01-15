@@ -25,8 +25,17 @@ def unique_vals(rows, col):
 # unique_vals(training_data, 0)
 # unique_vals(training_data, 1)
 
-# def class_counts()
-# 
+def class_counts(rows):
+    """Counts the number of each type of example in a dataset."""
+    counts = {} # a dictionary label -> count.
+    for row in rows:
+        # in our dataset format, the label is always the last column.
+        label = row[-1]
+        if label not in counts:
+            counts[label] = 0
+        counts[label] += 1
+    return counts
+
 
 def gini(rows):
     """Calculate the Gini Impurity for list of rows."""
