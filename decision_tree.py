@@ -35,6 +35,18 @@ def class_counts(rows):
             counts[label] = 0
         counts[label] += 1
     return counts
+# Demo
+# class_counts(training_data)
+# 
+
+def in_numeric(value):
+    """Test if a value is numeric"""
+    return isinstance(value, int) or isinstance(value, float)
+# Demo
+# is_numeric(7)
+# is_numeric('Red')
+# 
+
 
 
 def gini(rows):
