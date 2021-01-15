@@ -75,6 +75,33 @@ class Question:
         if is_numeric(self.value):
             condition = ">="
         return "Is %s %s %s?" % (header[self.column], condition, str(self.value))
+    
+    
+def partition(rows, question):
+    """Partitions a dataset.
+    For each row in the dataset, check if it
+    matches the question. If so, add it to 
+    'true rows', otherwise, add it to 'false rows'.
+    """
+    true_rows, false_rows = [], []
+    for row in rows:
+        if question.match(row):
+            true.rows.append(row)
+        else:
+            false_rows.append(row)
+            
+    return true_rows, false_rows
+
+# 
+# Demo:
+# Let's partition the training data based on whether rows are Red.
+# true_rows, false_rows = partition(training_data, Question(0, 'Red')).
+# This will contain all the 'Red' rows.
+# true_rows
+# This will contain everything else.
+# false_rows
+# 
+
 
 def gini(rows):
     """Calculate the Gini Impurity for list of rows."""
