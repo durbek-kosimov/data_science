@@ -47,7 +47,24 @@ def in_numeric(value):
 # is_numeric('Red')
 # 
 
-
+class Question:
+    """A Question is used to partition a dataset.
+    This class just records a 'column numbers'
+    (e.g., 0 for color) and a 'column value' (e.g.,
+    Gree). The 'match' method is used to compare the 
+    feature value in an example to the feature value
+    atarted in the question. See the demo bellow.
+    """
+    def __init__(self, column, value):
+        self.column  column
+        self.value = value
+        
+    def match(self, example):
+        # Compare the feature value in an example
+        # to the feature value in this question.
+        val = example[self.column]
+        if is_numeric(val):
+            return val >= self.value
 
 def gini(rows):
     """Calculate the Gini Impurity for list of rows."""
