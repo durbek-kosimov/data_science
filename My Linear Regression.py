@@ -137,6 +137,66 @@ print(lm.intercept_)
 lm.coef_
 
 
+# In[24]:
+
+
+X_train.columns
+
+
+# In[25]:
+
+
+cdf = pd.DataFrame(lm.coef_, X.columns, columns=['Coeff'])
+
+
+# In[26]:
+
+
+cdf
+
+
+# In[27]:
+
+
+from sklearn.datasets import load_boston
+
+
+# In[28]:
+
+
+boston = load_boston()
+
+
+# In[29]:
+
+
+boston.keys()
+
+
+# In[30]:
+
+
+print(boston['DESCR'])
+
+
+# In[31]:
+
+
+print(boston['data'])
+
+
+# In[32]:
+
+
+print(boston['feature_names'])
+
+
+# In[33]:
+
+
+print(boston['target'])
+
+
 # In[ ]:
 
 
