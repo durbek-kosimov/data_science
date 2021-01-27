@@ -197,6 +197,62 @@ print(boston['feature_names'])
 print(boston['target'])
 
 
+# ## Predictions
+
+# In[34]:
+
+
+predictions = lm.predict(X_test) # X-test is a feature
+
+
+# In[35]:
+
+
+predictions # predictions of prices of house
+
+
+# In[36]:
+
+
+y_test
+
+
+# In[37]:
+
+
+plt.scatter(y_test, predictions)
+
+
+# In[38]:
+
+
+sns.distplot((y_test-predictions))
+
+
+# In[39]:
+
+
+from sklearn import metrics
+
+
+# In[40]:
+
+
+metrics.mean_absolute_error(y_test, predictions)
+
+
+# In[41]:
+
+
+metrics.mean_squared_error(y_test, predictions)
+
+
+# In[42]:
+
+
+np.sqrt(metrics.mean_squared_error(y_test, predictions))
+
+
 # In[ ]:
 
 
