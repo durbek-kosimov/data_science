@@ -17,7 +17,7 @@
 # ** Import pandas, numpy, matplotlib,and seaborn. Then set %matplotlib inline 
 # (You'll import sklearn as you need it.)**
 
-# In[5]:
+# In[57]:
 
 
 import pandas as pd
@@ -38,7 +38,7 @@ get_ipython().run_line_magic('matplotlib', 'inline')
 # 
 # ** Read in the Ecommerce Customers csv file as a DataFrame called customers.**
 
-# In[12]:
+# In[58]:
 
 
 customers = pd.read_csv('Ecommerce Customers')
@@ -47,31 +47,31 @@ customers.head()
 
 # **Check the head of customers, and check out its info() and describe() methods.**
 
-# In[13]:
+# In[59]:
 
 
 customers.info()
 
 
-# In[14]:
+# In[60]:
 
 
 customers.describe()
 
 
-# In[277]:
+# In[ ]:
 
 
 
 
 
-# In[278]:
+# In[ ]:
 
 
 
 
 
-# In[279]:
+# In[ ]:
 
 
 
@@ -85,19 +85,19 @@ customers.describe()
 # ___
 # **Use seaborn to create a jointplot to compare the Time on Website and Yearly Amount Spent columns. Does the correlation make sense?**
 
-# In[15]:
+# In[61]:
 
 
 customers.columns
 
 
-# In[17]:
+# In[62]:
 
 
 sns.jointplot(x="Time on Website", y="Yearly Amount Spent", data=customers)
 
 
-# In[281]:
+# In[ ]:
 
 
 
@@ -105,19 +105,19 @@ sns.jointplot(x="Time on Website", y="Yearly Amount Spent", data=customers)
 
 # ** Do the same but with the Time on App column instead. **
 
-# In[19]:
+# In[63]:
 
 
 customers.columns
 
 
-# In[20]:
+# In[64]:
 
 
 sns.jointplot(x='Time on App', y='Yearly Amount Spent', data=customers)
 
 
-# In[282]:
+# In[ ]:
 
 
 
@@ -125,19 +125,19 @@ sns.jointplot(x='Time on App', y='Yearly Amount Spent', data=customers)
 
 # ** Use jointplot to create a 2D hex bin plot comparing Time on App and Length of Membership.**
 
-# In[21]:
+# In[65]:
 
 
 customers.columns
 
 
-# In[22]:
+# In[66]:
 
 
 sns.jointplot(x='Time on App', y='Length of Membership', data=customers, kind='hex')
 
 
-# In[283]:
+# In[ ]:
 
 
 
@@ -145,13 +145,13 @@ sns.jointplot(x='Time on App', y='Length of Membership', data=customers, kind='h
 
 # **Let's explore these types of relationships across the entire data set. Use [pairplot](https://stanford.edu/~mwaskom/software/seaborn/tutorial/axis_grids.html#plotting-pairwise-relationships-with-pairgrid-and-pairplot) to recreate the plot below.(Don't worry about the the colors)**
 
-# In[23]:
+# In[67]:
 
 
 sns.pairplot(customers)
 
 
-# In[284]:
+# In[ ]:
 
 
 
@@ -159,7 +159,7 @@ sns.pairplot(customers)
 
 # **Based off this plot what looks to be the most correlated feature with Yearly Amount Spent?**
 
-# In[285]:
+# In[68]:
 
 
 # Length of Membership
@@ -167,13 +167,13 @@ sns.pairplot(customers)
 
 # **Create a linear model plot (using seaborn's lmplot) of  Yearly Amount Spent vs. Length of Membership. **
 
-# In[25]:
+# In[69]:
 
 
 sns.lmplot(x='Length of Membership', y='Yearly Amount Spent', data=customers)
 
 
-# In[286]:
+# In[ ]:
 
 
 
@@ -184,30 +184,42 @@ sns.lmplot(x='Length of Membership', y='Yearly Amount Spent', data=customers)
 # Now that we've explored the data a bit, let's go ahead and split the data into training and testing sets.
 # ** Set a variable X equal to the numerical features of the customers and a variable y equal to the "Yearly Amount Spent" column. **
 
-# In[287]:
+# In[70]:
 
 
+customers.columns
 
 
-
-# In[288]:
-
+# In[79]:
 
 
+X = customers[['Avg. Session Length', 'Time on App', 'Time on Website', 'Length of Membership']]
+
+
+# In[80]:
+
+
+y = customers['Yearly Amount Spent']
 
 
 # ** Use model_selection.train_test_split from sklearn to split the data into training and testing sets. Set test_size=0.3 and random_state=101**
 
-# In[289]:
+# In[81]:
 
 
+from sklearn.model_selection import train_test_split
 
 
-
-# In[290]:
-
+# In[82]:
 
 
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=101)
+
+
+# In[83]:
+
+
+y_train
 
 
 # ## Training the Model
@@ -216,34 +228,34 @@ sns.lmplot(x='Length of Membership', y='Yearly Amount Spent', data=customers)
 # 
 # ** Import LinearRegression from sklearn.linear_model **
 
-# In[291]:
+# In[84]:
 
 
-
+from sklearn.linear_model import LinearRegression
 
 
 # **Create an instance of a LinearRegression() model named lm.**
 
-# In[292]:
+# In[85]:
 
 
-
+lm = LinearRegression()
 
 
 # ** Train/fit lm on the training data.**
 
-# In[293]:
+# In[86]:
 
 
-
+lm.fit(X_train, y_train)
 
 
 # **Print out the coefficients of the model**
 
-# In[294]:
+# In[87]:
 
 
-
+lm.coef_
 
 
 # ## Predicting Test Data
@@ -251,18 +263,26 @@ sns.lmplot(x='Length of Membership', y='Yearly Amount Spent', data=customers)
 # 
 # ** Use lm.predict() to predict off the X_test set of the data.**
 
-# In[295]:
+# In[88]:
 
 
+predictions = lm.predict(X_test)
 
+
+# In[89]:
+
+
+predictions
 
 
 # ** Create a scatterplot of the real test values versus the predicted values. **
 
-# In[296]:
+# In[98]:
 
 
-
+plt.scatter(y_test, predictions)
+plt.xlabel('Y Test (True Values)')
+plt.ylabel('Predicted Values')
 
 
 # ## Evaluating the Model
@@ -271,10 +291,24 @@ sns.lmplot(x='Length of Membership', y='Yearly Amount Spent', data=customers)
 # 
 # ** Calculate the Mean Absolute Error, Mean Squared Error, and the Root Mean Squared Error. Refer to the lecture or to Wikipedia for the formulas**
 
-# In[303]:
+# In[92]:
 
 
+from sklearn import metrics
 
+
+# In[99]:
+
+
+print('MAE: ', metrics.mean_absolute_error(y_test, predictions))
+print('MSE: ', metrics.mean_squared_error(y_test, predictions))
+print('RMSE: ', np.sqrt(metrics.mean_squared_error(y_test, predictions)))
+
+
+# In[100]:
+
+
+metrics.explained_variance_score(y_test, predictions)
 
 
 # ## Residuals
@@ -283,10 +317,10 @@ sns.lmplot(x='Length of Membership', y='Yearly Amount Spent', data=customers)
 # 
 # **Plot a histogram of the residuals and make sure it looks normally distributed. Use either seaborn distplot, or just plt.hist().**
 
-# In[317]:
+# In[101]:
 
 
-
+sns.distplot((y_test - predictions), bins=50)
 
 
 # ## Conclusion
@@ -294,19 +328,25 @@ sns.lmplot(x='Length of Membership', y='Yearly Amount Spent', data=customers)
 # 
 # ** Recreate the dataframe below. **
 
-# In[298]:
+# In[103]:
 
 
-
+ccustomers = pd.DataFrame(lm.coef_, X.columns, columns=['Coeff'])
+ccustomers
 
 
 # ** How can you interpret these coefficients? **
 
-# *Answer here*
+# 
+#     Holding all other features fixed, a 1 unit increase in Avg. Session Length is associated with an increase of 25.98 total dollars spent.
+#     Holding all other features fixed, a 1 unit increase in Time on App is associated with an increase of 38.59 total dollars spent.
+#     Holding all other features fixed, a 1 unit increase in Time on Website is associated with an increase of 0.19 total dollars spent.
+#     Holding all other features fixed, a 1 unit increase in Length of Membership is associated with an increase of 61.27 total dollars spent.
+# 
 
 # **Do you think the company should focus more on their mobile app or on their website?**
 
-# *Answer here*
+# This is tricky, there are two ways to think about this: Develop the Website to catch up to the performance of the mobile app, or develop the app more since that is what is working better. This sort of answer really depends on the other factors going on at the company, you would probably want to explore the relationship between Length of Membership and the App or the Website before coming to a conclusion!
 
 # ## Great Job!
 # 
