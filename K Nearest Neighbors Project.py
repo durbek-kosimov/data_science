@@ -45,10 +45,10 @@ df.head()
 # 
 # **Use seaborn on the dataframe to create a pairplot with the hue indicated by the TARGET CLASS column.**
 
-# In[5]:
+# In[28]:
 
 
-sns.pairplot(df, hue='TARGET CLASS')
+sns.pairplot(df, hue='TARGET CLASS', palette='coolwarm')
 
 
 # In[4]:
@@ -124,17 +124,24 @@ df_feat.head()
 from sklearn.model_selection import train_test_split
 
 
-# In[15]:
+# In[29]:
 
 
-X_train, X_test, y_train, y_test = train_test_split(scaled_features, df['TARGET CLASS'], test_size=0.3)
+X = df_feat
+y = df['TARGET CLASS']
+
+
+# In[30]:
+
+
+X_train, X_test, y_train, y_test = train_test_split(X,y, test_size=0.3, random_state=101)
 
 
 # # Using KNN
 # 
 # **Import KNeighborsClassifier from scikit learn.**
 
-# In[16]:
+# In[31]:
 
 
 from sklearn.neighbors import KNeighborsClassifier
@@ -142,7 +149,7 @@ from sklearn.neighbors import KNeighborsClassifier
 
 # **Create a KNN model instance with n_neighbors=1**
 
-# In[17]:
+# In[32]:
 
 
 knn = KNeighborsClassifier(n_neighbors=1)
@@ -150,13 +157,13 @@ knn = KNeighborsClassifier(n_neighbors=1)
 
 # **Fit this KNN model to the training data.**
 
-# In[20]:
+# In[33]:
 
 
 knn.fit(X_train, y_train)
 
 
-# In[21]:
+# In[34]:
 
 
 pred = knn.predict(X_test)
@@ -167,7 +174,7 @@ pred = knn.predict(X_test)
 
 # **Use the predict method to predict values using your KNN model and X_test.**
 
-# In[19]:
+# In[35]:
 
 
 from sklearn.metrics import classification_report, confusion_matrix
@@ -175,7 +182,7 @@ from sklearn.metrics import classification_report, confusion_matrix
 
 # ** Create a confusion matrix and classification report.**
 
-# In[22]:
+# In[36]:
 
 
 print(confusion_matrix(y_test, pred))
@@ -187,7 +194,7 @@ print(confusion_matrix(y_test, pred))
 
 
 
-# In[23]:
+# In[37]:
 
 
 print(classification_report(y_test, pred))
@@ -204,13 +211,28 @@ print(classification_report(y_test, pred))
 # 
 # ** Create a for loop that trains various KNN models with different k values, then keep track of the error_rate for each of these models with a list. Refer to the lecture if you are confused on this step.**
 
-# In[25]:
+# In[38]:
 
 
-
+error_rate = []
+for i in range(1,40):
+    knn = KNeighborsClassifier(n_neighbors=i)
+    knn.fit(X_train, y_train)
+    pred_i = knn.predict(X_test)
+    error_rate.append(np.mean(pred_i != y_test))
 
 
 # **Now create the following plot using the information from your for loop.**
+
+# In[39]:
+
+
+plt.figure(figsize=(10,6))
+plt.plot(range(1,40),error_rate, color='b', linestyle='--', marker='o',markerfacecolor='r',markersize=10)
+plt.title('Error rate vs K value')
+plt.xlabel('K')
+plt.ylabel('Error rate')
+
 
 # In[20]:
 
@@ -221,6 +243,17 @@ print(classification_report(y_test, pred))
 # ## Retrain with new K Value
 # 
 # **Retrain your model with the best K value (up to you to decide what you want) and re-do the classification report and the confusion matrix.**
+
+# In[40]:
+
+
+knn = KNeighborsClassifier(n_neighbors=30)
+knn.fit(X_train,y_train)
+pred = knn.predict(X_test)
+print(confusion_matrix(y_test, pred))
+print('\n')
+print(classification_report(y_test, pred))
+
 
 # In[21]:
 
