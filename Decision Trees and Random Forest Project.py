@@ -140,6 +140,13 @@ plt.xlabel('FICO')
 
 # ** Create a countplot using seaborn showing the counts of loans by purpose, with the color hue defined by not.fully.paid. **
 
+# In[15]:
+
+
+plt.figure(figsize=(11,7))
+sns.countplot(x="purpose", hue="not.fully.paid", data=loans, palette='Set1')
+
+
 # In[9]:
 
 
