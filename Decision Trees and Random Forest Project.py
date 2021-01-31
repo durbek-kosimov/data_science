@@ -155,6 +155,12 @@ sns.countplot(x="purpose", hue="not.fully.paid", data=loans, palette='Set1')
 
 # ** Let's see the trend between FICO score and interest rate. Recreate the following jointplot.**
 
+# In[17]:
+
+
+sns.jointplot(x="fico", y="int.rate", data=loans,color='purple')
+
+
 # In[10]:
 
 
@@ -162,6 +168,13 @@ sns.countplot(x="purpose", hue="not.fully.paid", data=loans, palette='Set1')
 
 
 # ** Create the following lmplots to see if the trend differed between not.fully.paid and credit.policy. Check the documentation for lmplot() if you can't figure out how to separate it into columns.**
+
+# In[19]:
+
+
+plt.figure(figsize=(11,7))
+sns.lmplot(y='int.rate',x='fico',data=loans,hue='credit.policy',col='not.fully.paid',palette='Set1')
+
 
 # In[11]:
 
@@ -174,6 +187,12 @@ sns.countplot(x="purpose", hue="not.fully.paid", data=loans, palette='Set1')
 # Let's get ready to set up our data for our Random Forest Classification Model!
 # 
 # **Check loans.info() again.**
+
+# In[20]:
+
+
+loans.info()
+
 
 # In[12]:
 
@@ -191,24 +210,24 @@ sns.countplot(x="purpose", hue="not.fully.paid", data=loans, palette='Set1')
 # 
 # **Create a list of 1 element containing the string 'purpose'. Call this list cat_feats.**
 
-# In[13]:
+# In[21]:
 
 
-
+cat_feats = ['purpose']
 
 
 # **Now use pd.get_dummies(loans,columns=cat_feats,drop_first=True) to create a fixed larger dataframe that has new feature columns with dummy variables. Set this dataframe as final_data.**
 
-# In[14]:
+# In[22]:
 
 
+final_data = pd.get_dummies(loans,columns=cat_feats,drop_first=True)
 
 
-
-# In[ ]:
-
+# In[23]:
 
 
+final_data.info()
 
 
 # ## Train Test Split
@@ -217,16 +236,23 @@ sns.countplot(x="purpose", hue="not.fully.paid", data=loans, palette='Set1')
 # 
 # ** Use sklearn to split your data into a training set and a testing set as we've done in the past.**
 
-# In[16]:
+# In[24]:
 
 
+from sklearn.model_selection import train_test_split
 
 
-
-# In[17]:
-
+# In[26]:
 
 
+X = final_data.drop('not.fully.paid',axis=1)
+y = final_data['not.fully.paid']
+
+
+# In[27]:
+
+
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.33, random_state=42)
 
 
 # ## Training a Decision Tree Model
@@ -235,7 +261,7 @@ sns.countplot(x="purpose", hue="not.fully.paid", data=loans, palette='Set1')
 # 
 # ** Import DecisionTreeClassifier**
 
-# In[18]:
+# In[28]:
 
 
 from sklearn.tree import DecisionTreeClassifier
@@ -243,37 +269,49 @@ from sklearn.tree import DecisionTreeClassifier
 
 # **Create an instance of DecisionTreeClassifier() called dtree and fit it to the training data.**
 
-# In[19]:
+# In[29]:
 
 
+dtree = DecisionTreeClassifier()
 
 
-
-# In[32]:
-
+# In[30]:
 
 
+dtree.fit(X_train, y_train)
 
 
 # ## Predictions and Evaluation of Decision Tree
 # **Create predictions from the test set and create a classification report and a confusion matrix.**
 
-# In[21]:
+# In[31]:
 
 
+predictions = dtree.predict(X_test)
 
 
-
-# In[22]:
-
+# In[32]:
 
 
+from sklearn.metrics import classification_report, confusion_matrix
+
+
+# In[33]:
+
+
+print(classification_report(y_test,predictions))
 
 
 # In[23]:
 
 
 
+
+
+# In[34]:
+
+
+print(confusion_matrix(y_test,predictions))
 
 
 # In[24]:
@@ -288,16 +326,22 @@ from sklearn.tree import DecisionTreeClassifier
 # 
 # **Create an instance of the RandomForestClassifier class and fit it to our training data from the previous step.**
 
-# In[25]:
+# In[35]:
 
 
+from sklearn.ensemble import RandomForestClassifier
 
 
-
-# In[26]:
-
+# In[36]:
 
 
+rfc = RandomForestClassifier(n_estimators=600)
+
+
+# In[37]:
+
+
+rfc.fit(X_train,y_train)
 
 
 # In[27]:
@@ -312,18 +356,24 @@ from sklearn.tree import DecisionTreeClassifier
 # 
 # ** Predict the class of not.fully.paid for the X_test data.**
 
-# In[28]:
+# In[38]:
 
 
-
+predictions = rfc.predict(X_test)
 
 
 # **Now create a classification report from the results. Do you get anything strange or some sort of warning?**
 
-# In[29]:
+# In[39]:
 
 
+from sklearn.metrics import classification_report, confusion_matrix
 
+
+# In[40]:
+
+
+print(classification_report(y_test,predictions))
 
 
 # In[30]:
@@ -333,6 +383,12 @@ from sklearn.tree import DecisionTreeClassifier
 
 
 # **Show the Confusion Matrix for the predictions.**
+
+# In[41]:
+
+
+print(confusion_matrix(y_test,predictions))
+
 
 # In[31]:
 
@@ -345,7 +401,9 @@ from sklearn.tree import DecisionTreeClassifier
 # In[36]:
 
 
-
+# Depends what metric you are trying to optimize for.
+# Notice the recall for each class for the models.
+# Neither did very well, more feature engineering is needed.
 
 
 # # Great Job!
